@@ -41,7 +41,7 @@ public class ChatUsersImpl implements ChatUsers {
     }
 
     @Override
-    public void broadcastMessage(String message) {
+    public synchronized void broadcastMessage(String message) {
         userUsernameMap.keySet().stream().filter(Session::isOpen).forEach(
                 session -> directMessage(session, message));
     }
