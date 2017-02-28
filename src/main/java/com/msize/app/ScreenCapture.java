@@ -22,16 +22,19 @@ class ScreenCapture {
         this.byteArrayOutputStream = new ByteArrayOutputStream();
     }
 
-
     void capture() throws IOException {
-        byteArrayOutputStream.reset();
-        ImageIO.write(robot.createScreenCapture(rectangle), format, byteArrayOutputStream);
-        byteArrayOutputStream.flush();
-        byteArrayOutputStream.close();
+        synchronized (byteArrayOutputStream) {
+            byteArrayOutputStream.reset();
+            ImageIO.write(robot.createScreenCapture(rectangle), format, byteArrayOutputStream);
+            byteArrayOutputStream.flush();
+            byteArrayOutputStream.close();
+        }
     }
 
     byte[] getBytes() {
-        return byteArrayOutputStream.toByteArray();
+        synchronized (byteArrayOutputStream) {
+            return byteArrayOutputStream.toByteArray();
+        }
     }
 
 }

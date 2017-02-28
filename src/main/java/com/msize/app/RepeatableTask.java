@@ -1,19 +1,36 @@
 package com.msize.app;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Callable;
 
-abstract class RepeatableTask {
+class RepeatableTask {
 
+    private static final int MILLISECONDS_MULTIPLIER = 1000;
+    private final int milliseconds;
     private final Callable<Void> command;
 
-    RepeatableTask(Callable<Void> command) {
+    RepeatableTask(Callable<Void> command, int seconds) {
+        this.milliseconds = seconds * MILLISECONDS_MULTIPLIER;
         this.command = command;
     }
 
-    void execute() throws Exception {
-        command.call();
+    void run() {
+        Timer timer = new Timer();
+        timer.schedule(new DeferredTask(), 0, milliseconds);
     }
 
-    abstract void run();
+    private class DeferredTask extends TimerTask {
+
+        @Override
+        public void run() {
+            try {
+                command.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 
 }

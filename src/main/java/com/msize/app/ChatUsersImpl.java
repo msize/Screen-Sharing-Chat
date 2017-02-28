@@ -10,13 +10,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChatUsersImpl implements ChatUsers {
 
+    // A map from client `session` to his `name`
     private final Map<Session, String> userUsernameMap = new ConcurrentHashMap<>();
-    private final AtomicInteger nextUserNumber = new AtomicInteger(0);
+    private final AtomicInteger nextAnonymousNumber = new AtomicInteger(1);
 
     @Override
     public void add(Session user, String name) {
         if (name.isEmpty())
-            name = "Anonymous " + nextUserNumber.getAndIncrement();
+            name = "Anonymous " + nextAnonymousNumber.getAndIncrement();
         userUsernameMap.put(user, name);
     }
 
