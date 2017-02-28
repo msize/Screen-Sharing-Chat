@@ -11,17 +11,21 @@ import static org.easymock.EasyMock.*;
 
 public class ScreenSharingChatTest {
 
-    private Chat chat;
-    private Session first_session, second_session, third_session;
-    private RemoteEndpoint remoteEndpoint;
+    private final Chat chat;
+    private final Session first_session, second_session, third_session;
+    private final RemoteEndpoint remoteEndpoint;
 
-    @Before
-    public void setUp() {
+    public ScreenSharingChatTest() {
+        super();
         chat = new ScreenSharingChat(new ChatUsersImpl());
         first_session = mock(Session.class);
         second_session = mock(Session.class);
         third_session = mock(Session.class);
         remoteEndpoint = mock(RemoteEndpoint.class);
+    }
+
+    @Before
+    public void setUp() {
         expect(first_session.isOpen()).andReturn(false).anyTimes();
         expect(second_session.isOpen()).andReturn(false).anyTimes();
         replay(first_session);
