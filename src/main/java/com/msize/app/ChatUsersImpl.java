@@ -6,16 +6,17 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChatUsersImpl implements  ChatUsers {
 
     private Map<Session, String> userUsernameMap = new ConcurrentHashMap<>();
-    private int nextUserNumber = 0;
+    private AtomicInteger nextUserNumber = new AtomicInteger(0);
 
     @Override
     public void add(Session user, String name) {
         if (name.isEmpty())
-            name = "Anonymous " + ++nextUserNumber;
+            name = "Anonymous " + nextUserNumber.getAndIncrement();
         userUsernameMap.put(user, name);
     }
 
