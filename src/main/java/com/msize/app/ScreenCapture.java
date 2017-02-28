@@ -11,14 +11,12 @@ import java.io.IOException;
 class ScreenCapture {
 
     private final String format;
-    private final boolean inited;
     private final Robot robot;
     private final Rectangle rectangle;
     private final ByteArrayOutputStream byteArrayOutputStream;
 
     ScreenCapture(String format) throws AWTException {
         this.format = format;
-        this.inited = false;
         this.robot = new Robot();
         this.rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
         this.byteArrayOutputStream = new ByteArrayOutputStream();

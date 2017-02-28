@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ChatUsersImpl implements  ChatUsers {
+public class ChatUsersImpl implements ChatUsers {
 
     private final Map<Session, String> userUsernameMap = new ConcurrentHashMap<>();
     private final AtomicInteger nextUserNumber = new AtomicInteger(0);
