@@ -39,80 +39,64 @@ public class ScreenSharingChatTest {
     }
 
     @Test
-    public void aNewConnection() {
-        try {
-            expect(thirdSession.getRemote()).andStubReturn(remoteEndpoint);
-            remoteEndpoint.sendString("{\"type\":\"hello\"}");
-            replay(thirdSession);
-            replay(remoteEndpoint);
-            chat.newConnection(thirdSession);
-            verify(thirdSession);
-            verify(remoteEndpoint);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void aNewConnection() throws IOException {
+        expect(thirdSession.getRemote()).andStubReturn(remoteEndpoint);
+        remoteEndpoint.sendString("{\"type\":\"hello\"}");
+        replay(thirdSession);
+        replay(remoteEndpoint);
+        chat.newConnection(thirdSession);
+        verify(thirdSession);
+        verify(remoteEndpoint);
     }
 
     @Test
-    public void aCloseConnection() {
-        try {
-            expect(firstSession.isOpen()).andReturn(true).anyTimes();
-            expect(secondSession.isOpen()).andReturn(false).anyTimes();
-            expect(firstSession.getRemote()).andStubReturn(remoteEndpoint);
-            remoteEndpoint.sendString(and(contains("\"type\":\"chat\""), contains("left the chat")));
-            remoteEndpoint.sendString(contains("\"type\":\"list\""));
-            replay(firstSession);
-            replay(secondSession);
-            replay(remoteEndpoint);
-            chat.closeConnection(secondSession, 0, "");
-            verify(firstSession);
-            verify(secondSession);
-            verify(remoteEndpoint);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void aCloseConnection() throws IOException {
+        expect(firstSession.isOpen()).andReturn(true).anyTimes();
+        expect(secondSession.isOpen()).andReturn(false).anyTimes();
+        expect(firstSession.getRemote()).andStubReturn(remoteEndpoint);
+        remoteEndpoint.sendString(and(contains("\"type\":\"chat\""), contains("left the chat")));
+        remoteEndpoint.sendString(contains("\"type\":\"list\""));
+        replay(firstSession);
+        replay(secondSession);
+        replay(remoteEndpoint);
+        chat.closeConnection(secondSession, 0, "");
+        verify(firstSession);
+        verify(secondSession);
+        verify(remoteEndpoint);
     }
 
     @Test
-    public void aProcessMessage() {
-        try {
-            expect(firstSession.isOpen()).andReturn(true).anyTimes();
-            expect(secondSession.isOpen()).andReturn(true).anyTimes();
-            expect(firstSession.getRemote()).andStubReturn(remoteEndpoint);
-            expect(secondSession.getRemote()).andStubReturn(remoteEndpoint);
-            remoteEndpoint.sendString(and(contains("\"type\":\"chat\""), contains("\"message\":\"Hi!\"")));
-            expectLastCall().times(2);
-            replay(firstSession);
-            replay(secondSession);
-            replay(remoteEndpoint);
-            chat.processMessage(firstSession, "{\"type\":\"chat\";\"message\":\"Hi!\"}");
-            verify(firstSession);
-            verify(secondSession);
-            verify(remoteEndpoint);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void aProcessMessage() throws IOException {
+        expect(firstSession.isOpen()).andReturn(true).anyTimes();
+        expect(secondSession.isOpen()).andReturn(true).anyTimes();
+        expect(firstSession.getRemote()).andStubReturn(remoteEndpoint);
+        expect(secondSession.getRemote()).andStubReturn(remoteEndpoint);
+        remoteEndpoint.sendString(and(contains("\"type\":\"chat\""), contains("\"message\":\"Hi!\"")));
+        expectLastCall().times(2);
+        replay(firstSession);
+        replay(secondSession);
+        replay(remoteEndpoint);
+        chat.processMessage(firstSession, "{\"type\":\"chat\";\"message\":\"Hi!\"}");
+        verify(firstSession);
+        verify(secondSession);
+        verify(remoteEndpoint);
     }
 
     @Test
-    public void aUpdateScreen() {
-        try {
-            expect(firstSession.isOpen()).andReturn(true).anyTimes();
-            expect(secondSession.isOpen()).andReturn(true).anyTimes();
-            expect(firstSession.getRemote()).andStubReturn(remoteEndpoint);
-            expect(secondSession.getRemote()).andStubReturn(remoteEndpoint);
-            remoteEndpoint.sendString(contains("\"type\":\"screen\""));
-            expectLastCall().times(2);
-            replay(firstSession);
-            replay(secondSession);
-            replay(remoteEndpoint);
-            chat.updateScreen();
-            verify(firstSession);
-            verify(secondSession);
-            verify(remoteEndpoint);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void aUpdateScreen() throws IOException {
+        expect(firstSession.isOpen()).andReturn(true).anyTimes();
+        expect(secondSession.isOpen()).andReturn(true).anyTimes();
+        expect(firstSession.getRemote()).andStubReturn(remoteEndpoint);
+        expect(secondSession.getRemote()).andStubReturn(remoteEndpoint);
+        remoteEndpoint.sendString(contains("\"type\":\"screen\""));
+        expectLastCall().times(2);
+        replay(firstSession);
+        replay(secondSession);
+        replay(remoteEndpoint);
+        chat.updateScreen();
+        verify(firstSession);
+        verify(secondSession);
+        verify(remoteEndpoint);
     }
 
 }
