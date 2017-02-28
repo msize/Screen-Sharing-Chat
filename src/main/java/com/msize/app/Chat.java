@@ -3,8 +3,9 @@ package com.msize.app;
 import org.eclipse.jetty.websocket.api.Session;
 
 /**
- * A chat can provide conversation with multiple simultaneous clients
- * in global chat-room without authentication.
+ * A {@code Chat} can provide conversation with multiple
+ * simultaneous clients in global chat-room without
+ * authentication.
  */
 
 public interface Chat {
