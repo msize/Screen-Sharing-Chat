@@ -1,15 +1,17 @@
 package com.msize.app;
 
+import java.util.concurrent.Callable;
+
 abstract class RepeatableTask {
 
-    private final Command command;
+    private final Callable<Void> command;
 
-    RepeatableTask(Command command) {
+    RepeatableTask(Callable<Void> command) {
         this.command = command;
     }
 
     void execute() throws Exception {
-        command.execute();
+        command.call();
     }
 
     abstract void run();

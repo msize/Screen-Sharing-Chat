@@ -19,6 +19,7 @@ public class Main {
             RepeatableTask repeatableTask = new PeriodicalRepeatableTask(() -> {
                 screenCapture.capture();
                 chat.updateScreen();
+                return null;
             }, SCREEN_CAPTURE_UPDATE_INTERVAL);
             repeatableTask.run();
             staticFiles.location("/public");

@@ -2,13 +2,14 @@ package com.msize.app;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Callable;
 
 class PeriodicalRepeatableTask extends RepeatableTask {
 
     private static final int MILLISECONDS_MULTIPLIER = 1000;
     private final int milliseconds;
 
-    PeriodicalRepeatableTask(Command command, int seconds) {
+    PeriodicalRepeatableTask(Callable<Void> command, int seconds) {
         super(command);
         this.milliseconds = seconds * MILLISECONDS_MULTIPLIER;
     }
