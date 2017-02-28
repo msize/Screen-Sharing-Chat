@@ -12,21 +12,26 @@ public class Main {
 
     private static final int SCREEN_CAPTURE_UPDATE_INTERVAL_SEC = 5;
     private static final int CONNECTION_EXPIRATION_TIME_SEC = 600;
+    private static final String SCREEN_IMAGE_FORMAT = "png";
+    private static final String SCREEN_IMAGE_FILE_NAME = "/screen." + SCREEN_IMAGE_FORMAT;
+    private static final String STATIC_FILES_LOCATION = "/public";
+    private static final String WEB_SOCKET_PATH = "/chat";
+    private static final String AWT_EXCEPTION_MESSAGE = "Abstract Window Toolkit can't be initialized.";
 
     public static void main(String[] args) {
         try {
             Chat chat = new ScreenSharingChat(new ChatUsersImpl());
-            ScreenCapture screenCapture = new ScreenCapture("png");
+            ScreenCapture screenCapture = new ScreenCapture(SCREEN_IMAGE_FORMAT);
             RepeatableTask repeatableTask = new RepeatableTask(() -> {
                 screenCapture.capture();
                 chat.updateScreen();
                 return null;
             }, SCREEN_CAPTURE_UPDATE_INTERVAL_SEC);
             repeatableTask.run();
-            staticFiles.location("/public");
+            staticFiles.location(STATIC_FILES_LOCATION);
             staticFiles.expireTime(CONNECTION_EXPIRATION_TIME_SEC);
-            webSocket("/chat", new WebSocketHandler(chat));
-            get("/screen.png", (req, res) -> {
+            webSocket(WEB_SOCKET_PATH, new WebSocketHandler(chat));
+            get(SCREEN_IMAGE_FILE_NAME, (req, res) -> {
                 OutputStream out = res.raw().getOutputStream();
                 out.write(screenCapture.getBytes());
                 out.flush();
@@ -35,7 +40,7 @@ public class Main {
             });
             init();
         } catch (AWTException e) {
-            System.err.println("Abstract Window Toolkit can't be initialized.");
+            System.err.println(AWT_EXCEPTION_MESSAGE);
             e.printStackTrace();
             System.exit(1);
         } catch (Exception e) {
