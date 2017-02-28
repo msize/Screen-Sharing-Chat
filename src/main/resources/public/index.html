@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Screen sharing chat</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td id="screen" rowspan="2">
+                    <img id="screen_img" alt="Screenshot" src="screen.png"/>
+                </td>
+                <td id="chat">
+                    <div id="history"></div>
+                </td>
+                <td rowspan="2">
+                    <div>
+                        <ul id="userlist"></ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="message" placeholder="Write a message..."/>
+                </td>
+            </tr>
+        </table>
+        <script src="screen-sharing-chat.js"></script>
+    </body>
+</html>
