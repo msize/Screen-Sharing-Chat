@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChatUsersImpl implements  ChatUsers {
 
-    private Map<Session, String> userUsernameMap = new ConcurrentHashMap<>();
-    private AtomicInteger nextUserNumber = new AtomicInteger(0);
+    private final Map<Session, String> userUsernameMap = new ConcurrentHashMap<>();
+    private final AtomicInteger nextUserNumber = new AtomicInteger(0);
 
     @Override
     public void add(Session user, String name) {

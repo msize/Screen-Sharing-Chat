@@ -6,7 +6,7 @@ import java.util.TimerTask;
 class PeriodicalRepeatableTask extends RepeatableTask {
 
     private static final int MILLISECONDS_MULTIPLIER = 1000;
-    private int milliseconds;
+    private final int milliseconds;
 
     PeriodicalRepeatableTask(Command command, int seconds) {
         super(command);

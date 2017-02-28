@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class ScreenSharingChat implements Chat {
 
-    private Map<String, RequestHandler> requestHandlerMap = new HashMap<>();
-    private ChatUsers chatUsers;
+    private final Map<String, RequestHandler> requestHandlerMap = new HashMap<>();
+    private final ChatUsers chatUsers;
 
     ScreenSharingChat(ChatUsers chatUsers) {
         this.chatUsers = chatUsers;

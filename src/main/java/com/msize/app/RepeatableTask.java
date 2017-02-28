@@ -2,7 +2,7 @@ package com.msize.app;
 
 abstract class RepeatableTask {
 
-    private Command command;
+    private final Command command;
 
     RepeatableTask(Command command) {
         this.command = command;

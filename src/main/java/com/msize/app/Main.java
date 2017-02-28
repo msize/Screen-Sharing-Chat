@@ -20,7 +20,6 @@ public class Main {
                 screenCapture.capture();
                 chat.updateScreen();
             }, SCREEN_CAPTURE_UPDATE_INTERVAL);
-            screenCapture.init();
             repeatableTask.run();
             staticFiles.location("/public");
             staticFiles.expireTime(CONNECTION_EXPIRATION_TIME);

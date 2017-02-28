@@ -10,27 +10,22 @@ import java.io.IOException;
 
 class ScreenCapture {
 
-    private String format;
-    private boolean inited;
-    private Robot robot;
-    private Rectangle rectangle;
-    private ByteArrayOutputStream byteArrayOutputStream;
+    private final String format;
+    private final boolean inited;
+    private final Robot robot;
+    private final Rectangle rectangle;
+    private final ByteArrayOutputStream byteArrayOutputStream;
 
-    ScreenCapture(String format) {
+    ScreenCapture(String format) throws AWTException {
         this.format = format;
         this.inited = false;
+        this.robot = new Robot();
+        this.rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+        this.byteArrayOutputStream = new ByteArrayOutputStream();
     }
 
-    void init() throws AWTException {
-        robot = new Robot();
-        rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-        byteArrayOutputStream = new ByteArrayOutputStream();
-        inited = true;
-    }
 
-    void capture() throws ScreenCaptureException, IOException {
-        if (!inited)
-            throw new ScreenCaptureException("Screen Capture is not inited");
+    void capture() throws IOException {
         byteArrayOutputStream.reset();
         ImageIO.write(robot.createScreenCapture(rectangle), format, byteArrayOutputStream);
         byteArrayOutputStream.flush();
