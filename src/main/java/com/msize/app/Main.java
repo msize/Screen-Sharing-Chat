@@ -9,20 +9,21 @@ import static spark.Spark.webSocket;
 
 public class Main {
 
+    private static final int SCREEN_CAPTURE_UPDATE_INTERVAL = 5;
+    private static final int CONNECTION_EXPIRATION_TIME = 600;
+
     public static void main(String[] args) {
         try {
-            AbstractChat chat = new ScreenSharingChat();
+            Chat chat = new ScreenSharingChat(new ChatUsersImpl());
             ScreenCapture screenCapture = new ScreenCapture("png");
-            final int screenCaptureUpdateInterval = 5;
             RepeatableTask repeatableTask = new PeriodicalRepeatableTask(() -> {
                 screenCapture.capture();
                 chat.updateScreen();
-            }, screenCaptureUpdateInterval);
+            }, SCREEN_CAPTURE_UPDATE_INTERVAL);
             screenCapture.init();
             repeatableTask.run();
             staticFiles.location("/public");
-            final int connectionExpirationTime = 600;
-            staticFiles.expireTime(connectionExpirationTime);
+            staticFiles.expireTime(CONNECTION_EXPIRATION_TIME);
             webSocket("/chat", new WebSocketHandler(chat));
             get("/screen.png", (req, res) -> {
                 OutputStream out= res.raw().getOutputStream();

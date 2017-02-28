@@ -5,12 +5,12 @@ import java.util.TimerTask;
 
 class PeriodicalRepeatableTask extends RepeatableTask {
 
+    private static final int MILLISECONDS_MULTIPLIER = 1000;
     private int milliseconds;
 
     PeriodicalRepeatableTask(Command command, int seconds) {
         super(command);
-        final int millisecondsMultiplier = 1000;
-        this.milliseconds = seconds * millisecondsMultiplier;
+        this.milliseconds = seconds * MILLISECONDS_MULTIPLIER;
     }
 
     @Override

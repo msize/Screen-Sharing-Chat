@@ -11,13 +11,13 @@ import static org.easymock.EasyMock.*;
 
 public class ScreenSharingChatTest {
 
-    private AbstractChat chat;
+    private Chat chat;
     private Session first_session, second_session, third_session;
     private RemoteEndpoint remoteEndpoint;
 
     @Before
     public void setUp() {
-        chat = new ScreenSharingChat();
+        chat = new ScreenSharingChat(new ChatUsersImpl());
         first_session = mock(Session.class);
         second_session = mock(Session.class);
         third_session = mock(Session.class);

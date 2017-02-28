@@ -9,9 +9,9 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 @WebSocket
 public class WebSocketHandler {
 
-    private AbstractChat chat;
+    private Chat chat;
 
-    WebSocketHandler(AbstractChat chat) {
+    WebSocketHandler(Chat chat) {
         this.chat = chat;
     }
 

@@ -3,19 +3,18 @@ package com.msize.app;
 import org.eclipse.jetty.websocket.api.Session;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class ScreenSharingChat extends AbstractChat {
+public class ScreenSharingChat implements Chat {
 
-    private Map<String, RequestHandler> requestHandlerMap = new ConcurrentHashMap<>();
-    private Map<Session, String> userUsernameMap = new ConcurrentHashMap<>();
-    private int nextUserNumber = 0;
+    private Map<String, RequestHandler> requestHandlerMap = new HashMap<>();
+    private ChatUsers chatUsers;
 
-    ScreenSharingChat() {
+    ScreenSharingChat(ChatUsers chatUsers) {
+        this.chatUsers = chatUsers;
         initRequestHandlers();
     }
 
@@ -26,8 +25,7 @@ public class ScreenSharingChat extends AbstractChat {
 
     @Override
     public void closeConnection(Session user, int statusCode, String reason) {
-        String userName = userUsernameMap.get(user);
-        userUsernameMap.remove(user);
+        String userName = chatUsers.extract(user);
         message("Server", userName + " left the chat");
         userlist();
     }
@@ -49,16 +47,13 @@ public class ScreenSharingChat extends AbstractChat {
     }
 
     private void setName(Session user, JSONObject request) {
-        String userName = request.getString("name");
-        if (userName.isEmpty())
-            userName = "Anonymous " + ++nextUserNumber;
-        userUsernameMap.put(user, userName);
-        message("Server",userName + " joined the chat");
+        chatUsers.add(user, request.getString("name"));
+        message("Server",chatUsers.getName(user) + " joined the chat");
         userlist();
     }
 
     private void chat(Session user, JSONObject request) {
-        message(userUsernameMap.get(user), request.getString("message"));
+        message(chatUsers.getName(user), request.getString("message"));
     }
 
     private void message(String sender, String message) {
@@ -73,21 +68,16 @@ public class ScreenSharingChat extends AbstractChat {
     private void userlist() {
         broadcastMessage(new JSONObject()
                 .put("type", "list")
-                .put("userlist", userUsernameMap.values())
+                .put("userlist", chatUsers.getNames())
         );
     }
 
     private void broadcastMessage(JSONObject jsonObject) {
-        userUsernameMap.keySet().stream().filter(Session::isOpen).forEach(
-                session -> directMessage(session, jsonObject));
+        chatUsers.broadcastMessage(String.valueOf(jsonObject));
     }
 
     private void directMessage(Session user, JSONObject jsonObject) {
-        try {
-            user.getRemote().sendString(String.valueOf(jsonObject));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        chatUsers.directMessage(user, String.valueOf(jsonObject));
     }
 
     private void initRequestHandlers() {
