@@ -16,6 +16,8 @@ public class ChatUsersImpl implements ChatUsers {
 
     @Override
     public void add(Session user, String name) {
+        if (userUsernameMap.containsKey(user))
+            return;
         if (name.isEmpty())
             name = "Anonymous " + nextAnonymousNumber.getAndIncrement();
         userUsernameMap.put(user, name);
