@@ -12,6 +12,7 @@ public class Main {
 
     private static final int SCREEN_CAPTURE_UPDATE_INTERVAL_SEC = 5;
     private static final int CONNECTION_EXPIRATION_TIME_SEC = 600;
+    private static final int MAX_MESSAGE_LENGTH = 200;
     private static final String SCREEN_IMAGE_FORMAT = "png";
     private static final String SCREEN_IMAGE_FILE_NAME = "/screen." + SCREEN_IMAGE_FORMAT;
     private static final String STATIC_FILES_LOCATION = "/public";
@@ -20,7 +21,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Chat chat = new ScreenSharingChat(new ChatUsersImpl());
+            Chat chat = new ScreenSharingChat(new ChatUsersImpl(), MAX_MESSAGE_LENGTH);
             ScreenCapture screenCapture = new ScreenCapture(SCREEN_IMAGE_FORMAT);
             RepeatableTask repeatableTask = new RepeatableTask(() -> {
                 screenCapture.capture();

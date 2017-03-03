@@ -11,7 +11,8 @@ import static org.easymock.EasyMock.*;
 
 public class ScreenSharingChatTest {
 
-    private final Chat chat = new ScreenSharingChat(new ChatUsersImpl());
+    private static final int MAX_MESSAGE_LENGTH = 10;
+    private final Chat chat = new ScreenSharingChat(new ChatUsersImpl(), MAX_MESSAGE_LENGTH);
     private final Session firstSession = mock(Session.class);
     private final Session secondSession = mock(Session.class);
     private final Session thirdSession = mock(Session.class);
@@ -70,6 +71,25 @@ public class ScreenSharingChatTest {
         replay(secondSession);
         replay(remoteEndpoint);
         chat.processMessage(firstSession, "{\"type\":\"chat\";\"message\":\"Hi!\"}");
+        verify(firstSession);
+        verify(secondSession);
+        verify(remoteEndpoint);
+    }
+
+    @Test
+    public void aProcessLongMessage() throws IOException {
+        String message = "Hello my dear friend!";
+        String cutMessage = message.substring(0, MAX_MESSAGE_LENGTH);
+        expect(firstSession.isOpen()).andReturn(true).anyTimes();
+        expect(secondSession.isOpen()).andReturn(true).anyTimes();
+        expect(firstSession.getRemote()).andStubReturn(remoteEndpoint);
+        expect(secondSession.getRemote()).andStubReturn(remoteEndpoint);
+        remoteEndpoint.sendString(and(contains("\"type\":\"chat\""), contains("\"message\":\"" + cutMessage + "\"")));
+        expectLastCall().times(2);
+        replay(firstSession);
+        replay(secondSession);
+        replay(remoteEndpoint);
+        chat.processMessage(firstSession, "{\"type\":\"chat\";\"message\":\"" + message + "\"}");
         verify(firstSession);
         verify(secondSession);
         verify(remoteEndpoint);

@@ -11,7 +11,7 @@ public class ScreenSharingChat implements Chat {
     // A map from `type` of client requests to appropriate `handler`
     private final Map<String, RequestHandler> requestHandlerMap = new HashMap<>();
     private final ChatUsers chatUsers;
-    private static final int MAX_MESSAGE_LENGTH = 200;
+    private final int maxMessageLength;
     private static final String
         TYPE = "type",
         SETNAME = "setname",
@@ -24,14 +24,15 @@ public class ScreenSharingChat implements Chat {
         REPLACE_GT_TO = "&gt;";
 
 
-    ScreenSharingChat(ChatUsers chatUsers) {
+    ScreenSharingChat(ChatUsers chatUsers, int maxMessageLength) {
         this.chatUsers = chatUsers;
+        this.maxMessageLength = maxMessageLength;
         initRequestHandlers();
     }
 
     @Override
     public void newConnection(Session user) {
-        chatUsers.directMessage(user, Protocol.hello(MAX_MESSAGE_LENGTH));
+        chatUsers.directMessage(user, Protocol.hello(maxMessageLength));
     }
 
     @Override
@@ -61,8 +62,8 @@ public class ScreenSharingChat implements Chat {
 
     private void chat(Session user, JSONObject request) {
         String message = request.getString(MESSAGE);
-        if (MAX_MESSAGE_LENGTH < message.length())
-            message = message.substring(0, MAX_MESSAGE_LENGTH);
+        if (maxMessageLength < message.length())
+            message = message.substring(0, maxMessageLength);
         chatUsers.broadcastMessage(Protocol.chat(chatUsers.getName(user), message));
     }
 
