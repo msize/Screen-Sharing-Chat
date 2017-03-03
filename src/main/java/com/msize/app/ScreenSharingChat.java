@@ -17,7 +17,12 @@ public class ScreenSharingChat implements Chat {
         SETNAME = "setname",
         CHAT = "chat",
         NAME = "name",
-        MESSAGE = "message";
+        MESSAGE = "message",
+        REPLACE_LT_FROM = "<",
+        REPLACE_LT_TO = "&lt;",
+        REPLACE_GT_FROM = ">",
+        REPLACE_GT_TO = "&gt;";
+
 
     ScreenSharingChat(ChatUsers chatUsers) {
         this.chatUsers = chatUsers;
@@ -62,7 +67,8 @@ public class ScreenSharingChat implements Chat {
     }
 
     private String stripMessage(String message) {
-        return message.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+        return message.replaceAll(REPLACE_LT_FROM, REPLACE_LT_TO)
+                .replaceAll(REPLACE_GT_FROM, REPLACE_GT_TO);
     }
 
     private void initRequestHandlers() {
