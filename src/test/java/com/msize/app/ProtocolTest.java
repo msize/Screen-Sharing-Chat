@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ProtocolTest {
 
+    private static final int MAX_MESSAGE_LENGTH = 10;
     private static final String
         TYPE = "type",
         HELLO = "hello",
@@ -22,6 +23,7 @@ public class ProtocolTest {
         SECOND_USER_NAME = "User 2",
         CHAT_MESSAGE = "hello world!",
         TIME = "\"time\":\"",
+        MSG_LEN = "\"msglen\":" + MAX_MESSAGE_LENGTH,
         TYPE_HELLO = "\"" + TYPE + "\":\"" + HELLO + "\"",
         TYPE_LIST = "\"" + TYPE + "\":\"" + LIST + "\"",
         TYPE_CHAT = "\"" + TYPE + "\":\"" + CHAT + "\"",
@@ -34,7 +36,9 @@ public class ProtocolTest {
 
     @Test
     public void aHello() {
-        assertTrue(Protocol.hello().contains(TYPE_HELLO));
+        String hello = Protocol.hello(MAX_MESSAGE_LENGTH);
+        assertTrue(hello.contains(TYPE_HELLO));
+        assertTrue(hello.contains(MSG_LEN));
     }
 
     @Test

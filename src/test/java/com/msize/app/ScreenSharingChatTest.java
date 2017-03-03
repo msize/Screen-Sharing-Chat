@@ -34,7 +34,7 @@ public class ScreenSharingChatTest {
     @Test
     public void aNewConnection() throws IOException {
         expect(thirdSession.getRemote()).andStubReturn(remoteEndpoint);
-        remoteEndpoint.sendString("{\"type\":\"hello\"}");
+        remoteEndpoint.sendString(and(contains("\"type\":\"hello\""), contains("\"msglen\":")));
         replay(thirdSession);
         replay(remoteEndpoint);
         chat.newConnection(thirdSession);

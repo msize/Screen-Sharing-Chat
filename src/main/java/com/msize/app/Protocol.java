@@ -21,11 +21,14 @@ class Protocol {
         LEFTCHAT = "left the chat",
         JOINCHAT = "joined the chat",
         SCREEN = "screen",
+        MSG_LENGTH = "msglen",
         TIMEFORMAT = "HH:mm:ss",
         SPACE = " ";
 
-    static String hello() {
-        return string(new JSONObject().put(TYPE, HELLO));
+    static String hello(int maxMessageLength) {
+        return string(new JSONObject()
+                .put(TYPE, HELLO)
+                .put(MSG_LENGTH, maxMessageLength));
     }
 
     static String userlist(Collection<String> names) {

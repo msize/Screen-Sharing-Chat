@@ -22,11 +22,13 @@ function initMessageHandlers() {
     };
 }
 
-function initInputControl() {
+function initInputControl(data) {
     var input = id("message");
     input.addEventListener("keypress", function (e) {
         if (e.keyCode === 13) { sendMessage(e.target.value); }
     });
+    input.maxLength = data.msglen;
+    input.placeholder = "Write a message... (Max length " + data.msglen + ")";
     input.focus();
 }
 
@@ -54,7 +56,7 @@ function handleMessage(message) {
 
 function acquaintance(data) {
     sendSetName(userName);
-    initInputControl();
+    initInputControl(data);
 }
 
 function updateChat(data) {
